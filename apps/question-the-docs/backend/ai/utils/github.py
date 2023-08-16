@@ -1,11 +1,31 @@
 "AI helper functions for loading data from GitHub."
 
 import base64
-import json
 import os
 from pathlib import Path
 
 import requests
+
+REPOS = {
+    'superduperdb': {
+        'owner': 'SuperDuperDB',
+        'name': 'superduperdb',
+        'branch': 'main',
+        'documentation_location': 'docs/',
+    },
+    'langchain': {
+        'owner': 'langchain-ai',
+        'name': 'langchain',
+        'branch': 'master',
+        'documentation_location': 'docs/',
+    },
+    'fastchat': {
+        'owner': 'lm-sys',
+        'name': 'FastChat',
+        'branch': 'main',
+        'documentation_location': 'docs/',
+    },
+}
 
 
 # TODO: Use GraphQL API instead of REST API and convert to async
@@ -31,7 +51,7 @@ def gh_repo_contents(owner, repo, branch=None):
                 errs.append(e)
                 continue
         raise Exception(
-            f"Tried `main` and `master` branches, but neither exist. :: reson {errs}"
+            f"Tried `main` and `master` branches, but neither exist. Reason: {errs}"
         )
 
 
@@ -53,12 +73,8 @@ def download_and_decode(url):
     return base64.b64decode(blob['content'])
 
 
-def save_github_md_files_locally(repo_details):
-    print(f"Downloading files from GitHub for {json.dumps(repo_details)}")
-    owner = repo_details['owner']
-    name = repo_details['repo']
-    branch = repo_details['branch']
-    documentation_location = repo_details['documentation_location']
+def save_github_md_files_locally(repo):
+    owner, name, branch, documentation_location = REPOS[repo].values()
 
     repo_contents = gh_repo_contents(owner, name, branch)
     urls = documentation_markdown_urls(repo_contents, documentation_location)
@@ -66,7 +82,7 @@ def save_github_md_files_locally(repo_details):
     try:
         Path(f"docs/{name}").mkdir(exist_ok=False, parents=True)
     except FileExistsError:
-        raise FileExistsError(f"Directory docs/{name} already exists.")
+        pass
 
     for i, url in enumerate(urls):
         content = download_and_decode(url)
@@ -74,20 +90,3 @@ def save_github_md_files_locally(repo_details):
             f.write(content)
 
     return Path(f"docs/{name}").glob("*")
-
-
-def get_repo_details(path):
-    path_split = path.split('/')
-    branch = None
-    documentation_location = ''
-    owner = path_split[3]
-    repo = path_split[4]
-    if len(path_split) == 7:
-        branch = path_split[-1]
-    details = {
-        'owner': owner,
-        'repo': repo,
-        'branch': branch,
-        'documentation_location': documentation_location,
-    }
-    return details

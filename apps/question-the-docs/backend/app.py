@@ -3,9 +3,15 @@ from backend.ai.components import install_ai_components
 from backend.config import settings
 from backend.documents.routes import documents_router
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
 
 from superduperdb import superduper
+
+# TODO: Fix before deployment
+origins = [
+    "*",
+]
 
 
 def init_routers(app: FastAPI) -> None:
@@ -15,6 +21,14 @@ def init_routers(app: FastAPI) -> None:
 def create_app() -> FastAPI:
     _app = FastAPI(title="Question the Docs")
 
+    _app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
     @_app.on_event("startup")
     def startup_db_client():
         _app.mongodb_client = MongoClient(settings.mongo_uri)
@@ -23,12 +37,11 @@ def create_app() -> FastAPI:
         # We wrap our MongoDB to make it a SuperDuperDB!
         _app.superduperdb = superduper(_app.mongodb)
 
-        # EXPLAIN ARTIFACTS HERE.
+        # Artifacts are data that has been pre-processed for AI.
         load_ai_artifacts(_app.superduperdb)
 
-        # We populate our SuperDuperDB with AI components.
-        # EXPLAIN COMPONENTS HERE.
-        # These will be used later to answer questions on our data.
+        # Components are AI models that have been selected based
+        # on the type artifacts that have been loaded (text, audio, ...).
         install_ai_components(_app.superduperdb)
 
     @_app.on_event("shutdown")

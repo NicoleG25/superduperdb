@@ -15,15 +15,14 @@ async def query_docs(request: Request, query: Query) -> Answer:
     # Step 1: Build your query
     # Build your query here combining vector-search "like(...)"
     # with classical mongodb queries "find(...)"
-    collection = Collection(name=query.document_index)
+    collection = Collection(name=query.collection_name)
     context_select = collection.like(
         {settings.vector_embedding_key: query.query},
         n=settings.nearest_to_query,
-        vector_index=query.document_index,
+        vector_index=query.collection_name,
     ).find()
 
     # Step 2: Execute your query
-    # INSERT INFORMATION HERE
     db = request.app.superduperdb
     db_response, _ = await db.apredict(
         'gpt-3.5-turbo',

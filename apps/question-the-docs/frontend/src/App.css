@@ -1,0 +1,70 @@
+#root {
+  max-width: 1280px;
+  padding: 1rem;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+.banner {
+  padding: 5px;
+  width: 250px;
+  height: 30px;
+}
+
+.dropdown {
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+  font-size: 18px;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 700px;
+  height: 30px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.submit {
+  background-color: white; /* Green */
+  padding: 5px;
+  height: 40px;
+  border: none;
+  display: block;
+  width: 150px;
+  text-align: left;
+  margin-bottom: 1px;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+}
+.submit:hover {
+  background-color: rgb(245, 245, 245);
+}
+
+.box-border {
+  width: 700px; /* Minimum width of the box */
+  min-height: 225px;
+  border-radius: 10px;
+  padding: 5px;
+  overflow-y: hidden;
+}
+
+
+
+
