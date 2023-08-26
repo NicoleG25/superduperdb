@@ -64,6 +64,15 @@ input {
   padding: 5px;
   overflow-y: hidden;
 }
+.centered-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the left */
+  justify-content: center;
+  height: 100vh;
+  padding-left: 20%; /* Adjust this value to move the content more to the right */
+}
+
 
 
 

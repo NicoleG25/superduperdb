@@ -131,6 +131,7 @@ def make_endpoints(app, db):
     def show():
         return jsonify(db.show(**request.get_json()))
 
+
     @app.errorhandler(500)
     def handle_500(error):
         error_traceback = traceback.format_exc()
