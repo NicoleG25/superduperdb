@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Button, styled, ThemeProvider, createTheme } from '@mui/material';
 import DropdownMenu from './components/DropdownMenu';
-import Query from './components/Query';
 import handleSubmit from './services/queries';
 import Header from './components/Header';
 import MarkdownDisplay from './components/MarkdownDisplay';
@@ -29,7 +28,6 @@ function App() {
     const theme = createTheme({
         palette: {
             mode: darkMode ? 'dark' : 'light',
-            // Define your color palettes here for both light and dark modes
         },
     });
 
